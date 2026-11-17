@@ -1,12 +1,10 @@
-# Nosh — Normalization: 1NF to 2NF to 3NF to BCNF
+# Nosh - Normalization: 1NF to 2NF to 3NF to BCNF
 
 **App:** [Nosh (Inovix)](https://github.com/ARRAEYY/Inovix), a prepaid campus food-ordering platform for Rishihood University. Students order from campus outlets (like *The Commons* and *Brew & Bites*), pay online through Razorpay, and pick up their food with an OTP code. Outlets manage incoming orders in real time.
 
 **What this document covers:** the order and payment flow, which means students, outlets, menus, orders, order lines, customizations, payments and refunds. This is the part of the app where every kind of normal-form violation actually shows up, so it is the right slice to walk through. The supporting tables (sessions, audit log, notifications) are keyed the same way and would not add anything new.
 
 **Why normalization matters for this app in one paragraph:** order history is the one thing we must never corrupt. Money totals, refund rights and pickup codes all hang off it. Normalization is how we make sure each fact lives in exactly one place, so it cannot contradict itself. At each step below we show the specific problem (called an anomaly) that the step removes, using the app's own seed data as the example.
-
----
 
 ## 0. The starting point: one flat order sheet (UNF)
 
@@ -17,7 +15,7 @@ The natural first version of Nosh is a spreadsheet an outlet might actually keep
 | Order | `order_number`, `placed_at`, `status`, `pickup_code` |
 | Student, copied into every row | `student_name`, `student_email`, `college_id`, `phone`, `course`, `year` |
 | Outlet, copied into every row | `outlet_name`, `outlet_slug`, `outlet_location`, `outlet_rating`, `campus_name` |
-| Items | `line_items` — one text cell holding the whole order |
+| Items | `line_items` - one text cell holding the whole order |
 | Money, payment and refund | `subtotal`, `platform_fee`, `total_amount`, `payment_status`, `payment_method`, `gateway_ref`, `refund_reason`, `refund_amount` |
 
 To see what a full row actually looks like, read NOSH-0001 as a record card:
@@ -46,7 +44,7 @@ To see what a full row actually looks like, read NOSH-0001 as a record card:
 | payment_status | PAID |
 | payment_method | ONLINE |
 | gateway_ref | pay_QxE1uN |
-| refund_reason | (none — the order completed) |
+| refund_reason | (none - the order completed) |
 | refund_amount | (none) |
 
 And the two rows we will keep coming back to (same student, so the same six student columns repeat again):
@@ -58,7 +56,7 @@ And the two rows we will keep coming back to (same student, so the same six stud
 
 NOSH-0003 is included so the refund path, which the app really supports, is visible from the start.
 
-**What is wrong with this sheet, concretely:**
+**What is wrong with this sheet:**
 
 - **Not atomic:** `line_items` packs several items, each with a name, category, price and quantity, into one text cell. A customization like "Extra cheese +₹30" would pack even more into the same cell.
 - **Repeating groups:** an order can hold any number of items, and a payment can have several partial refunds (the app supports multiple manual partial refunds). But the sheet has only one `refund_*` set of columns.
@@ -68,8 +66,6 @@ NOSH-0003 is included so the refund path, which the app really supports, is visi
 - **Delete anomaly:** delete the only Curry Corner order and we lose the outlet itself.
 
 Each of these gets fixed by one of the normal-form steps below.
-
----
 
 ## 1. First Normal Form (1NF)
 
@@ -102,7 +98,7 @@ Every one of those rows also still carries all 21 order-level columns from the s
 |---|---|---|---|---|
 | NOSH-0001 | 2 | 1 | Extra cheese | 30.00 |
 
-`ORDER_REFUNDS`: key **(order_number, refund_no)**. This one is real — it is NOSH-0003:
+`ORDER_REFUNDS`: key **(order_number, refund_no)**. This one is real - it is NOSH-0003:
 
 | order_number | refund_no | reason | amount | status |
 |---|---|---|---|---|
@@ -121,8 +117,6 @@ order_number            -> placed_at, status, pickup_code, student_name, student
 Read the first line as: the order number alone already tells you all those 20 columns. That observation is exactly what 2NF will act on.
 
 Notice that 1NF fixed atomicity but made redundancy worse, not better: the order's facts now repeat on every line, and nothing stops two lines of the same order from disagreeing about, say, `total_amount`. That is the job of the next two steps.
-
----
 
 ## 2. Second Normal Form (2NF)
 
@@ -152,8 +146,6 @@ ORDER_REFUNDS     (**order_number**, **refund_no**, reason, amount, status)
 **Problems removed:** an order's total or status now lives in exactly one row. A dish's price has one home. A new menu item or outlet can exist before anyone orders.
 
 **What is still wrong (for 3NF):** inside `ORDERS`, the student columns and outlet columns still ride along with every order. They are not partial dependencies (they do depend on the whole key, which is now just order_number). They are transitive dependencies, which is the next rule.
-
----
 
 ## 3. Third Normal Form (3NF)
 
@@ -195,8 +187,6 @@ ORDER_LINE_OPTIONS / ORDER_REFUNDS                          (unchanged from 2NF)
 
 Payments and refunds also get their own tables, because they have a lifecycle of their own: a payment is created PENDING before it becomes PAID, and refunds belong to the payment, not to the order sheet. So: `PAYMENTS(**payment_id**, order_id, amount, status, method, gateway_ref)` and `REFUNDS(**refund_id**, payment_id, amount, reason, status, triggered_by)`.
 
----
-
 ## 4. Boyce-Codd Normal Form (BCNF)
 
 **The rule in plain words:** for every dependency X -> Y, X must be a key of the relation (a superkey, strictly). BCNF is like 3NF with no exceptions for special cases.
@@ -220,8 +210,6 @@ Every left side is a key, so **the schema is in BCNF.**
 
 The interesting cases are the alternate keys. `pickup_code` (the OTP students show at the counter) determines its order without being the primary key, and so does `college_id`. A common question here is "isn't pickup_code -> order_number a violation?" It is not, because BCNF only requires the left side to be *a* key, and pickup_code is unique, so it is a candidate key. It becomes a UNIQUE constraint in the schema instead of the primary key.
 
----
-
 ## 5. Denormalizations the app keeps on purpose
 
 The real Inovix schema (Prisma, 24 models) is the BCNF design above plus four deliberate deviations. Each one trades a little purity for something the app needs. Being able to explain why each is justified is the point of this section:
@@ -230,8 +218,6 @@ The real Inovix schema (Prisma, 24 models) is the BCNF design above plus four de
 2. **`ORDERS.outlet_snapshot`.** Same reasoning for the outlet's name and timing at order time.
 3. **`OUTLETS.rating`.** Derivable from reviews, like `subscriber_count` in any platform schema. Kept so the home screen reads one row instead of aggregating all reviews. Recomputed as reviews land.
 4. **`OUTLETS.tags` and `ORDERS.timeline` (JSON).** Comma-separated tags and a JSON status timeline are 1NF deviations kept for convenience. The team tracks the timeline one as debt: the app's TODO list plans an `OrderStatusEvent` table, which is exactly what a full normalization would produce.
-
----
 
 ## 6. Final mapping: normalized relations to actual app tables
 

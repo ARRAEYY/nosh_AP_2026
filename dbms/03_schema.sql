@@ -1,6 +1,6 @@
 -- ============================================================================
--- Nosh (Inovix) — Campus food-ordering app
--- dbms/03_schema.sql · CP2 AP
+-- Nosh (Inovix) - Campus food-ordering app
+-- dbms/03_schema.sql - CP2 AP
 -- Team: Adil Reyaz (2501010025), Utkarsh Singh (2501010488),
 --       Renuka Yadav (2501010373), Shubham (2501010672)
 --
@@ -20,17 +20,17 @@ CREATE SCHEMA nosh;
 SET search_path TO nosh;
 
 -- ----------------------------------------------------------------------------
--- 1. campuses — one row per university served by Nosh
+-- 1. campuses - one row per university served by Nosh
 -- ----------------------------------------------------------------------------
 CREATE TABLE campuses (
     campus_id   VARCHAR(20) PRIMARY KEY,         -- e.g. 'RU'
     name        VARCHAR(120) NOT NULL,
-    domain      VARCHAR(120) NOT NULL UNIQUE,     -- e.g. 'rishihood.edu.in' — alternate key
+    domain      VARCHAR(120) NOT NULL UNIQUE,     -- e.g. 'rishihood.edu.in' - alternate key
     created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- ----------------------------------------------------------------------------
--- 2. users — a login account (email + password hash + role)
+-- 2. users - a login account (email + password hash + role)
 --    Student, outlet-staff and admin accounts all live here; role decides what
 --    they can do. The identity record (profile) is split out below so the
 --    login account stays separate from the student profile (see §3 of
@@ -49,7 +49,7 @@ CREATE TABLE users (
 );
 
 -- ----------------------------------------------------------------------------
--- 3. student_profiles — 1:1 with users (STUDENT role); the identity record
+-- 3. student_profiles - 1:1 with users (STUDENT role); the identity record
 -- ----------------------------------------------------------------------------
 CREATE TABLE student_profiles (
     student_id    VARCHAR(30) PRIMARY KEY,
@@ -59,7 +59,7 @@ CREATE TABLE student_profiles (
     phone         VARCHAR(15)  NOT NULL,
     course        VARCHAR(80),                   -- e.g. 'BTech CS & AI'
     year          SMALLINT,
-    college_id    VARCHAR(30)  NOT NULL UNIQUE,  -- e.g. 'RU12345' — alternate key
+    college_id    VARCHAR(30)  NOT NULL UNIQUE,  -- e.g. 'RU12345' - alternate key
     campus_id     VARCHAR(20)  REFERENCES campuses (campus_id)
                                   ON DELETE RESTRICT,
 
@@ -68,7 +68,7 @@ CREATE TABLE student_profiles (
 );
 
 -- ----------------------------------------------------------------------------
--- 4. outlets — campus food outlets (The Commons, Brew & Bites, ...)
+-- 4. outlets - campus food outlets (The Commons, Brew & Bites, ...)
 -- ----------------------------------------------------------------------------
 CREATE TABLE outlets (
     outlet_id    VARCHAR(30) PRIMARY KEY,
@@ -89,7 +89,7 @@ CREATE TABLE outlets (
 );
 
 -- ----------------------------------------------------------------------------
--- 5. menu_categories — categories within one outlet's menu (Meals, Snacks...)
+-- 5. menu_categories - categories within one outlet's menu (Meals, Snacks...)
 -- ----------------------------------------------------------------------------
 CREATE TABLE menu_categories (
     category_id  VARCHAR(30) PRIMARY KEY,
@@ -105,7 +105,7 @@ CREATE TABLE menu_categories (
 );
 
 -- ----------------------------------------------------------------------------
--- 6. menu_items — the dishes on a menu
+-- 6. menu_items - the dishes on a menu
 -- ----------------------------------------------------------------------------
 CREATE TABLE menu_items (
     menu_item_id   VARCHAR(30) PRIMARY KEY,
@@ -132,7 +132,7 @@ CREATE TABLE menu_items (
 );
 
 -- ----------------------------------------------------------------------------
--- 7. customization_groups — option groups on a menu item (Add-ons, Size, Spice)
+-- 7. customization_groups - option groups on a menu item (Add-ons, Size, Spice)
 -- ----------------------------------------------------------------------------
 CREATE TABLE customization_groups (
     group_id      VARCHAR(30) PRIMARY KEY,
@@ -148,7 +148,7 @@ CREATE TABLE customization_groups (
 );
 
 -- ----------------------------------------------------------------------------
--- 8. customization_options — the selectable options inside a group
+-- 8. customization_options - the selectable options inside a group
 -- ----------------------------------------------------------------------------
 CREATE TABLE customization_options (
     option_id     VARCHAR(30) PRIMARY KEY,
@@ -163,7 +163,7 @@ CREATE TABLE customization_options (
 );
 
 -- ----------------------------------------------------------------------------
--- 9. orders — one order placed by a student at an outlet
+-- 9. orders - one order placed by a student at an outlet
 --    pickup_code is a candidate key (the OTP shown at the counter), so UNIQUE.
 -- ----------------------------------------------------------------------------
 CREATE TABLE orders (
@@ -192,7 +192,7 @@ CREATE TABLE orders (
 );
 
 -- ----------------------------------------------------------------------------
--- 10. order_items — the lines of an order
+-- 10. order_items - the lines of an order
 --     snapshot columns (name, price, image_url, options_snapshot) are kept as
 --     historical facts: what was *actually charged* on that day (denorm §5.1).
 -- ----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ CREATE TABLE order_items (
 );
 
 -- ----------------------------------------------------------------------------
--- 11. payments — one payment per order (1:1)
+-- 11. payments - one payment per order (1:1)
 -- ----------------------------------------------------------------------------
 CREATE TABLE payments (
     payment_id        VARCHAR(30) PRIMARY KEY,
@@ -239,7 +239,7 @@ CREATE TABLE payments (
 );
 
 -- ----------------------------------------------------------------------------
--- 12. refunds — multiple per payment (supports partial refunds)
+-- 12. refunds - multiple per payment (supports partial refunds)
 -- ----------------------------------------------------------------------------
 CREATE TABLE refunds (
     refund_id     VARCHAR(30) PRIMARY KEY,
