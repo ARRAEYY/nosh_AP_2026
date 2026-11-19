@@ -1,0 +1,66 @@
+=== R2 (READ) - Student profile for the logged-in user (auth OUTLET_STAFF_INCLUDE -> studentProfile + campus) ===
+Average: 0.053 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Nested Loop  (cost=0.00..3.20 rows=1 width=76) (actual time=0.013..0.015 rows=1 loops=1)
+  Join Filter: ((c.campus_id)::text = (sp.campus_id)::text)
+  Buffers: shared hit=3
+  ->  Nested Loop  (cost=0.00..2.18 rows=1 width=55) (actual time=0.011..0.012 rows=1 loops=1)
+        Join Filter: ((sp.user_id)::text = (u.user_id)::text)
+        Buffers: shared hit=2
+        ->  Seq Scan on users u  (cost=0.00..1.09 rows=1 width=8) (actual time=0.005..0.006 rows=1 loops=1)
+              Filter: ((email)::text = 'adil@rishihood.edu.in'::text)
+              Rows Removed by Filter: 6
+              Buffers: shared hit=1
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=62) (actual time=0.004..0.004 rows=1 loops=1)
+              Buffers: shared hit=1
+  ->  Seq Scan on campuses c  (cost=0.00..1.01 rows=1 width=24) (actual time=0.001..0.001 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=323
+Planning Time: 0.629 ms
+Execution Time: 0.047 ms
+
+
+--- Run 2 ---
+Nested Loop  (cost=0.00..3.20 rows=1 width=76) (actual time=0.011..0.013 rows=1 loops=1)
+  Join Filter: ((c.campus_id)::text = (sp.campus_id)::text)
+  Buffers: shared hit=3
+  ->  Nested Loop  (cost=0.00..2.18 rows=1 width=55) (actual time=0.009..0.011 rows=1 loops=1)
+        Join Filter: ((sp.user_id)::text = (u.user_id)::text)
+        Buffers: shared hit=2
+        ->  Seq Scan on users u  (cost=0.00..1.09 rows=1 width=8) (actual time=0.006..0.007 rows=1 loops=1)
+              Filter: ((email)::text = 'adil@rishihood.edu.in'::text)
+              Rows Removed by Filter: 6
+              Buffers: shared hit=1
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=62) (actual time=0.002..0.002 rows=1 loops=1)
+              Buffers: shared hit=1
+  ->  Seq Scan on campuses c  (cost=0.00..1.01 rows=1 width=24) (actual time=0.001..0.001 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=303
+Planning Time: 0.509 ms
+Execution Time: 0.068 ms
+
+
+--- Run 3 ---
+Nested Loop  (cost=0.00..3.20 rows=1 width=76) (actual time=0.011..0.013 rows=1 loops=1)
+  Join Filter: ((c.campus_id)::text = (sp.campus_id)::text)
+  Buffers: shared hit=3
+  ->  Nested Loop  (cost=0.00..2.18 rows=1 width=55) (actual time=0.009..0.010 rows=1 loops=1)
+        Join Filter: ((sp.user_id)::text = (u.user_id)::text)
+        Buffers: shared hit=2
+        ->  Seq Scan on users u  (cost=0.00..1.09 rows=1 width=8) (actual time=0.005..0.006 rows=1 loops=1)
+              Filter: ((email)::text = 'adil@rishihood.edu.in'::text)
+              Rows Removed by Filter: 6
+              Buffers: shared hit=1
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=62) (actual time=0.002..0.002 rows=1 loops=1)
+              Buffers: shared hit=1
+  ->  Seq Scan on campuses c  (cost=0.00..1.01 rows=1 width=24) (actual time=0.001..0.001 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=303
+Planning Time: 0.621 ms
+Execution Time: 0.044 ms
+

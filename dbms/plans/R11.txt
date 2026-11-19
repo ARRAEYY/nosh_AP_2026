@@ -1,0 +1,36 @@
+=== R11 (READ) - Tracking: order timeline + status milestones (orders.timeline JSONB is the source of truth) ===
+Average: 0.025 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=136) (actual time=0.005..0.006 rows=0 loops=1)
+  Filter: ((order_id)::text = 'ord_001'::text)
+  Rows Removed by Filter: 4
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=143
+Planning Time: 0.264 ms
+Execution Time: 0.026 ms
+
+
+--- Run 2 ---
+Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=136) (actual time=0.007..0.008 rows=0 loops=1)
+  Filter: ((order_id)::text = 'ord_001'::text)
+  Rows Removed by Filter: 4
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=141
+Planning Time: 0.317 ms
+Execution Time: 0.028 ms
+
+
+--- Run 3 ---
+Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=136) (actual time=0.005..0.005 rows=0 loops=1)
+  Filter: ((order_id)::text = 'ord_001'::text)
+  Rows Removed by Filter: 4
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=141
+Planning Time: 0.248 ms
+Execution Time: 0.021 ms
+

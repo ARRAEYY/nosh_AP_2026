@@ -1,0 +1,51 @@
+=== R4 (READ) - Browse: one outlet by slug, with its campus (catalog GET /outlets/:id) ===
+Average: 0.032 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Nested Loop  (cost=0.00..2.06 rows=1 width=151) (actual time=0.008..0.009 rows=1 loops=1)
+  Join Filter: ((c.campus_id)::text = (o.campus_id)::text)
+  Buffers: shared hit=2
+  ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=1 width=130) (actual time=0.005..0.006 rows=1 loops=1)
+        Filter: ((slug)::text = 'the-commons'::text)
+        Rows Removed by Filter: 2
+        Buffers: shared hit=1
+  ->  Seq Scan on campuses c  (cost=0.00..1.01 rows=1 width=24) (actual time=0.001..0.001 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=229
+Planning Time: 0.364 ms
+Execution Time: 0.030 ms
+
+
+--- Run 2 ---
+Nested Loop  (cost=0.00..2.06 rows=1 width=151) (actual time=0.010..0.011 rows=1 loops=1)
+  Join Filter: ((c.campus_id)::text = (o.campus_id)::text)
+  Buffers: shared hit=2
+  ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=1 width=130) (actual time=0.006..0.007 rows=1 loops=1)
+        Filter: ((slug)::text = 'the-commons'::text)
+        Rows Removed by Filter: 2
+        Buffers: shared hit=1
+  ->  Seq Scan on campuses c  (cost=0.00..1.01 rows=1 width=24) (actual time=0.001..0.001 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=229
+Planning Time: 0.384 ms
+Execution Time: 0.035 ms
+
+
+--- Run 3 ---
+Nested Loop  (cost=0.00..2.06 rows=1 width=151) (actual time=0.008..0.009 rows=1 loops=1)
+  Join Filter: ((c.campus_id)::text = (o.campus_id)::text)
+  Buffers: shared hit=2
+  ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=1 width=130) (actual time=0.005..0.006 rows=1 loops=1)
+        Filter: ((slug)::text = 'the-commons'::text)
+        Rows Removed by Filter: 2
+        Buffers: shared hit=1
+  ->  Seq Scan on campuses c  (cost=0.00..1.01 rows=1 width=24) (actual time=0.001..0.001 rows=1 loops=1)
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=229
+Planning Time: 0.350 ms
+Execution Time: 0.030 ms
+

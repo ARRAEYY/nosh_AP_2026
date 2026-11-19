@@ -1,0 +1,42 @@
+=== W6 (WRITE) - Pay: mark payment PAID on Razorpay webhook / verify (payments.service verifyPayment, PENDING->PAID guard) ===
+Average: 0.035 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Update on payments  (cost=0.00..1.06 rows=0 width=0) (actual time=0.004..0.004 rows=0 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on payments  (cost=0.00..1.06 rows=1 width=210) (actual time=0.003..0.004 rows=0 loops=1)
+        Filter: (((payment_id)::text = 'pay_new01'::text) AND ((status)::text = 'PENDING'::text))
+        Rows Removed by Filter: 4
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=91
+Planning Time: 0.232 ms
+Execution Time: 0.030 ms
+
+
+--- Run 2 ---
+Update on payments  (cost=0.00..1.06 rows=0 width=0) (actual time=0.004..0.004 rows=0 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on payments  (cost=0.00..1.06 rows=1 width=210) (actual time=0.003..0.003 rows=0 loops=1)
+        Filter: (((payment_id)::text = 'pay_new01'::text) AND ((status)::text = 'PENDING'::text))
+        Rows Removed by Filter: 4
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=91
+Planning Time: 0.210 ms
+Execution Time: 0.029 ms
+
+
+--- Run 3 ---
+Update on payments  (cost=0.00..1.06 rows=0 width=0) (actual time=0.005..0.005 rows=0 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on payments  (cost=0.00..1.06 rows=1 width=210) (actual time=0.004..0.004 rows=0 loops=1)
+        Filter: (((payment_id)::text = 'pay_new01'::text) AND ((status)::text = 'PENDING'::text))
+        Rows Removed by Filter: 4
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=91
+Planning Time: 0.262 ms
+Execution Time: 0.047 ms
+

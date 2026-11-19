@@ -1,0 +1,99 @@
+=== R13 (READ) - Outlet: active orders for the kitchen board, paid only (orders.findByOutletId) ===
+Average: 0.102 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Sort  (cost=3.23..3.24 rows=1 width=97) (actual time=0.070..0.071 rows=1 loops=1)
+  Sort Key: o.placed_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Hash Join  (cost=2.16..3.22 rows=1 width=97) (actual time=0.052..0.053 rows=1 loops=1)
+        Hash Cond: ((sp.student_id)::text = (o.student_id)::text)
+        Buffers: shared hit=3
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=30) (actual time=0.006..0.006 rows=4 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=2.15..2.15 rows=1 width=82) (actual time=0.036..0.037 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=2
+              ->  Hash Right Join  (cost=1.08..2.15 rows=1 width=82) (actual time=0.029..0.032 rows=1 loops=1)
+                    Hash Cond: ((p.order_id)::text = (o.order_id)::text)
+                    Filter: (((p.status)::text = ANY ('{PAID,REFUNDED}'::text[])) OR (p.status IS NULL))
+                    Buffers: shared hit=2
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=13) (actual time=0.001..0.001 rows=4 loops=1)
+                          Buffers: shared hit=1
+                    ->  Hash  (cost=1.07..1.07 rows=1 width=76) (actual time=0.011..0.012 rows=1 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on orders o  (cost=0.00..1.07 rows=1 width=76) (actual time=0.006..0.007 rows=1 loops=1)
+                                Filter: (((outlet_id)::text = 'out_commons'::text) AND ((status)::text = ANY ('{PENDING,CONFIRMED,PREPARING,READY}'::text[])))
+                                Rows Removed by Filter: 3
+                                Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=372
+Planning Time: 0.633 ms
+Execution Time: 0.113 ms
+
+
+--- Run 2 ---
+Sort  (cost=3.23..3.24 rows=1 width=97) (actual time=0.052..0.053 rows=1 loops=1)
+  Sort Key: o.placed_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Hash Join  (cost=2.16..3.22 rows=1 width=97) (actual time=0.038..0.040 rows=1 loops=1)
+        Hash Cond: ((sp.student_id)::text = (o.student_id)::text)
+        Buffers: shared hit=3
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=30) (actual time=0.006..0.007 rows=4 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=2.15..2.15 rows=1 width=82) (actual time=0.025..0.025 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=2
+              ->  Hash Right Join  (cost=1.08..2.15 rows=1 width=82) (actual time=0.019..0.022 rows=1 loops=1)
+                    Hash Cond: ((p.order_id)::text = (o.order_id)::text)
+                    Filter: (((p.status)::text = ANY ('{PAID,REFUNDED}'::text[])) OR (p.status IS NULL))
+                    Buffers: shared hit=2
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=13) (actual time=0.001..0.001 rows=4 loops=1)
+                          Buffers: shared hit=1
+                    ->  Hash  (cost=1.07..1.07 rows=1 width=76) (actual time=0.007..0.008 rows=1 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on orders o  (cost=0.00..1.07 rows=1 width=76) (actual time=0.004..0.005 rows=1 loops=1)
+                                Filter: (((outlet_id)::text = 'out_commons'::text) AND ((status)::text = ANY ('{PENDING,CONFIRMED,PREPARING,READY}'::text[])))
+                                Rows Removed by Filter: 3
+                                Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=372
+Planning Time: 0.588 ms
+Execution Time: 0.085 ms
+
+
+--- Run 3 ---
+Sort  (cost=3.23..3.24 rows=1 width=97) (actual time=0.061..0.062 rows=1 loops=1)
+  Sort Key: o.placed_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=6
+  ->  Hash Join  (cost=2.16..3.22 rows=1 width=97) (actual time=0.045..0.046 rows=1 loops=1)
+        Hash Cond: ((sp.student_id)::text = (o.student_id)::text)
+        Buffers: shared hit=3
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=30) (actual time=0.006..0.007 rows=4 loops=1)
+              Buffers: shared hit=1
+        ->  Hash  (cost=2.15..2.15 rows=1 width=82) (actual time=0.029..0.030 rows=1 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=2
+              ->  Hash Right Join  (cost=1.08..2.15 rows=1 width=82) (actual time=0.023..0.026 rows=1 loops=1)
+                    Hash Cond: ((p.order_id)::text = (o.order_id)::text)
+                    Filter: (((p.status)::text = ANY ('{PAID,REFUNDED}'::text[])) OR (p.status IS NULL))
+                    Buffers: shared hit=2
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=13) (actual time=0.001..0.001 rows=4 loops=1)
+                          Buffers: shared hit=1
+                    ->  Hash  (cost=1.07..1.07 rows=1 width=76) (actual time=0.009..0.009 rows=1 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on orders o  (cost=0.00..1.07 rows=1 width=76) (actual time=0.005..0.006 rows=1 loops=1)
+                                Filter: (((outlet_id)::text = 'out_commons'::text) AND ((status)::text = ANY ('{PENDING,CONFIRMED,PREPARING,READY}'::text[])))
+                                Rows Removed by Filter: 3
+                                Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=372
+Planning Time: 0.625 ms
+Execution Time: 0.108 ms
+

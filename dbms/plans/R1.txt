@@ -1,0 +1,36 @@
+=== R1 (READ) - Login: find a user by email (auth.service passwordLogin / devLogin) ===
+Average: 0.025 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Seq Scan on users  (cost=0.00..1.09 rows=1 width=190) (actual time=0.007..0.008 rows=1 loops=1)
+  Filter: ((email)::text = 'adil@rishihood.edu.in'::text)
+  Rows Removed by Filter: 6
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=110
+Planning Time: 0.235 ms
+Execution Time: 0.027 ms
+
+
+--- Run 2 ---
+Seq Scan on users  (cost=0.00..1.09 rows=1 width=190) (actual time=0.006..0.007 rows=1 loops=1)
+  Filter: ((email)::text = 'adil@rishihood.edu.in'::text)
+  Rows Removed by Filter: 6
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=100
+Planning Time: 0.233 ms
+Execution Time: 0.025 ms
+
+
+--- Run 3 ---
+Seq Scan on users  (cost=0.00..1.09 rows=1 width=190) (actual time=0.006..0.007 rows=1 loops=1)
+  Filter: ((email)::text = 'adil@rishihood.edu.in'::text)
+  Rows Removed by Filter: 6
+  Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=100
+Planning Time: 0.222 ms
+Execution Time: 0.024 ms
+

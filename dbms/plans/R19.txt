@@ -1,0 +1,57 @@
+=== R19 (READ) - Dashboard: revenue trend by day, paid payments only (admin revenue over time) ===
+Average: 0.053 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+GroupAggregate  (cost=1.08..1.11 rows=1 width=48) (actual time=0.026..0.027 rows=1 loops=1)
+  Group Key: (date_trunc('day'::text, paid_at))
+  Buffers: shared hit=4
+  ->  Sort  (cost=1.08..1.09 rows=1 width=13) (actual time=0.021..0.021 rows=1 loops=1)
+        Sort Key: (date_trunc('day'::text, paid_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Seq Scan on payments p  (cost=0.00..1.07 rows=1 width=13) (actual time=0.009..0.009 rows=1 loops=1)
+              Filter: ((paid_at >= '2026-11-01 00:00:00+00'::timestamp with time zone) AND (paid_at < '2026-11-30 00:00:00+00'::timestamp with time zone) AND ((status)::text = 'PAID'::text))
+              Rows Removed by Filter: 3
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=119
+Planning Time: 0.279 ms
+Execution Time: 0.053 ms
+
+
+--- Run 2 ---
+GroupAggregate  (cost=1.08..1.11 rows=1 width=48) (actual time=0.029..0.029 rows=1 loops=1)
+  Group Key: (date_trunc('day'::text, paid_at))
+  Buffers: shared hit=4
+  ->  Sort  (cost=1.08..1.09 rows=1 width=13) (actual time=0.025..0.025 rows=1 loops=1)
+        Sort Key: (date_trunc('day'::text, paid_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Seq Scan on payments p  (cost=0.00..1.07 rows=1 width=13) (actual time=0.007..0.007 rows=1 loops=1)
+              Filter: ((paid_at >= '2026-11-01 00:00:00+00'::timestamp with time zone) AND (paid_at < '2026-11-30 00:00:00+00'::timestamp with time zone) AND ((status)::text = 'PAID'::text))
+              Rows Removed by Filter: 3
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=119
+Planning Time: 0.245 ms
+Execution Time: 0.052 ms
+
+
+--- Run 3 ---
+GroupAggregate  (cost=1.08..1.11 rows=1 width=48) (actual time=0.026..0.026 rows=1 loops=1)
+  Group Key: (date_trunc('day'::text, paid_at))
+  Buffers: shared hit=4
+  ->  Sort  (cost=1.08..1.09 rows=1 width=13) (actual time=0.020..0.021 rows=1 loops=1)
+        Sort Key: (date_trunc('day'::text, paid_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Seq Scan on payments p  (cost=0.00..1.07 rows=1 width=13) (actual time=0.008..0.009 rows=1 loops=1)
+              Filter: ((paid_at >= '2026-11-01 00:00:00+00'::timestamp with time zone) AND (paid_at < '2026-11-30 00:00:00+00'::timestamp with time zone) AND ((status)::text = 'PAID'::text))
+              Rows Removed by Filter: 3
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=119
+Planning Time: 0.277 ms
+Execution Time: 0.053 ms
+

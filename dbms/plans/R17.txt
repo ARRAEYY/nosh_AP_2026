@@ -1,0 +1,39 @@
+=== R17 (READ) - Dashboard: average outlet rating across open outlets (platform overview - denormalized §5.3 column) ===
+Average: 0.055 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Aggregate  (cost=1.05..1.06 rows=1 width=48) (actual time=0.019..0.020 rows=1 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on outlets o  (cost=0.00..1.03 rows=3 width=7) (actual time=0.006..0.007 rows=3 loops=1)
+        Filter: is_open
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=78
+Planning Time: 0.173 ms
+Execution Time: 0.058 ms
+
+
+--- Run 2 ---
+Aggregate  (cost=1.05..1.06 rows=1 width=48) (actual time=0.016..0.017 rows=1 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on outlets o  (cost=0.00..1.03 rows=3 width=7) (actual time=0.007..0.007 rows=3 loops=1)
+        Filter: is_open
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=78
+Planning Time: 0.162 ms
+Execution Time: 0.050 ms
+
+
+--- Run 3 ---
+Aggregate  (cost=1.05..1.06 rows=1 width=48) (actual time=0.019..0.019 rows=1 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on outlets o  (cost=0.00..1.03 rows=3 width=7) (actual time=0.007..0.008 rows=3 loops=1)
+        Filter: is_open
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=78
+Planning Time: 0.170 ms
+Execution Time: 0.056 ms
+

@@ -1,0 +1,42 @@
+=== W1 (WRITE) - Place order: insert the order header (orders.repository createOrder, status PENDING, pickup_code minted) ===
+Average: 0.158 ms
+Scan: INSERT/UPDATE (index probe on PK)
+
+--- Run 1 ---
+Insert on orders  (cost=0.00..0.01 rows=0 width=0) (actual time=0.147..0.147 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=111
+  ->  Result  (cost=0.00..0.01 rows=1 width=568) (actual time=0.002..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.073 ms
+Execution Time: 0.163 ms
+
+
+--- Run 2 ---
+Insert on orders  (cost=0.00..0.01 rows=0 width=0) (actual time=0.142..0.143 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=111
+  ->  Result  (cost=0.00..0.01 rows=1 width=568) (actual time=0.001..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.049 ms
+Execution Time: 0.155 ms
+
+
+--- Run 3 ---
+Insert on orders  (cost=0.00..0.01 rows=0 width=0) (actual time=0.141..0.142 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=111
+  ->  Result  (cost=0.00..0.01 rows=1 width=568) (actual time=0.001..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.053 ms
+Execution Time: 0.156 ms
+

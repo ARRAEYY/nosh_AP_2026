@@ -1,0 +1,60 @@
+=== R7 (READ) - Item detail: customization groups + options for one menu item (menu.findById include customizationGroups.options) ===
+Average: 0.053 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Sort  (cost=2.15..2.15 rows=2 width=59) (actual time=0.046..0.047 rows=0 loops=1)
+  Sort Key: cg.group_id, co.option_id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  ->  Nested Loop  (cost=0.00..2.14 rows=2 width=59) (actual time=0.030..0.030 rows=0 loops=1)
+        Join Filter: ((cg.group_id)::text = (co.group_id)::text)
+        Buffers: shared hit=1
+        ->  Seq Scan on customization_groups cg  (cost=0.00..1.02 rows=1 width=28) (actual time=0.030..0.030 rows=0 loops=1)
+              Filter: ((menu_item_id)::text = 'mi_dosa'::text)
+              Rows Removed by Filter: 2
+              Buffers: shared hit=1
+        ->  Seq Scan on customization_options co  (cost=0.00..1.05 rows=5 width=46) (never executed)
+Planning:
+  Buffers: shared hit=225
+Planning Time: 0.383 ms
+Execution Time: 0.079 ms
+
+
+--- Run 2 ---
+Sort  (cost=2.15..2.15 rows=2 width=59) (actual time=0.016..0.017 rows=0 loops=1)
+  Sort Key: cg.group_id, co.option_id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  ->  Nested Loop  (cost=0.00..2.14 rows=2 width=59) (actual time=0.004..0.005 rows=0 loops=1)
+        Join Filter: ((cg.group_id)::text = (co.group_id)::text)
+        Buffers: shared hit=1
+        ->  Seq Scan on customization_groups cg  (cost=0.00..1.02 rows=1 width=28) (actual time=0.004..0.004 rows=0 loops=1)
+              Filter: ((menu_item_id)::text = 'mi_dosa'::text)
+              Rows Removed by Filter: 2
+              Buffers: shared hit=1
+        ->  Seq Scan on customization_options co  (cost=0.00..1.05 rows=5 width=46) (never executed)
+Planning:
+  Buffers: shared hit=203
+Planning Time: 0.331 ms
+Execution Time: 0.037 ms
+
+
+--- Run 3 ---
+Sort  (cost=2.15..2.15 rows=2 width=59) (actual time=0.018..0.019 rows=0 loops=1)
+  Sort Key: cg.group_id, co.option_id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  ->  Nested Loop  (cost=0.00..2.14 rows=2 width=59) (actual time=0.005..0.005 rows=0 loops=1)
+        Join Filter: ((cg.group_id)::text = (co.group_id)::text)
+        Buffers: shared hit=1
+        ->  Seq Scan on customization_groups cg  (cost=0.00..1.02 rows=1 width=28) (actual time=0.005..0.005 rows=0 loops=1)
+              Filter: ((menu_item_id)::text = 'mi_dosa'::text)
+              Rows Removed by Filter: 2
+              Buffers: shared hit=1
+        ->  Seq Scan on customization_options co  (cost=0.00..1.05 rows=5 width=46) (never executed)
+Planning:
+  Buffers: shared hit=203
+Planning Time: 0.359 ms
+Execution Time: 0.042 ms
+

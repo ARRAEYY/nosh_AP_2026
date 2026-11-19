@@ -1,0 +1,45 @@
+=== W7 (WRITE) - Refund: create a refund row (admin issueManualRefund / transition.service auto-refund) ===
+Average: 0.539 ms
+Scan: INSERT/UPDATE (index probe on PK)
+
+--- Run 1 ---
+Insert on refunds  (cost=0.00..0.01 rows=0 width=0) (actual time=0.159..0.159 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=55
+  ->  Result  (cost=0.00..0.01 rows=1 width=422) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.050 ms
+Trigger for constraint refunds_payment_id_fkey: time=0.374 calls=1
+Execution Time: 0.546 ms
+
+
+--- Run 2 ---
+Insert on refunds  (cost=0.00..0.01 rows=0 width=0) (actual time=0.147..0.147 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=56
+  ->  Result  (cost=0.00..0.01 rows=1 width=422) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.079 ms
+Trigger for constraint refunds_payment_id_fkey: time=0.394 calls=1
+Execution Time: 0.557 ms
+
+
+--- Run 3 ---
+Insert on refunds  (cost=0.00..0.01 rows=0 width=0) (actual time=0.146..0.146 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 1
+  Conflicting Tuples: 0
+  Buffers: shared hit=56
+  ->  Result  (cost=0.00..0.01 rows=1 width=422) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.051 ms
+Trigger for constraint refunds_payment_id_fkey: time=0.346 calls=1
+Execution Time: 0.514 ms
+

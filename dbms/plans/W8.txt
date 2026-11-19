@@ -1,0 +1,42 @@
+=== W8 (WRITE) - Kitchen: advance an order to READY (orders.repository updateStatus, PREPARING->READY guard + timeline append) ===
+Average: 0.052 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Update on orders  (cost=0.00..1.06 rows=0 width=0) (actual time=0.009..0.010 rows=0 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on orders  (cost=0.00..1.06 rows=1 width=104) (actual time=0.009..0.009 rows=0 loops=1)
+        Filter: (((order_id)::text = 'ord_new01'::text) AND ((status)::text = 'PREPARING'::text))
+        Rows Removed by Filter: 4
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=132
+Planning Time: 0.259 ms
+Execution Time: 0.050 ms
+
+
+--- Run 2 ---
+Update on orders  (cost=0.00..1.06 rows=0 width=0) (actual time=0.005..0.005 rows=0 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on orders  (cost=0.00..1.06 rows=1 width=104) (actual time=0.004..0.005 rows=0 loops=1)
+        Filter: (((order_id)::text = 'ord_new01'::text) AND ((status)::text = 'PREPARING'::text))
+        Rows Removed by Filter: 4
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=132
+Planning Time: 0.248 ms
+Execution Time: 0.045 ms
+
+
+--- Run 3 ---
+Update on orders  (cost=0.00..1.06 rows=0 width=0) (actual time=0.007..0.007 rows=0 loops=1)
+  Buffers: shared hit=1
+  ->  Seq Scan on orders  (cost=0.00..1.06 rows=1 width=104) (actual time=0.006..0.006 rows=0 loops=1)
+        Filter: (((order_id)::text = 'ord_new01'::text) AND ((status)::text = 'PREPARING'::text))
+        Rows Removed by Filter: 4
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=132
+Planning Time: 0.307 ms
+Execution Time: 0.062 ms
+

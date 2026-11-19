@@ -1,0 +1,60 @@
+=== R10 (READ) - Counter: order by pickup_code (the OTP the student reads out - alternate key) ===
+Average: 0.040 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Nested Loop  (cost=0.00..3.21 rows=1 width=85) (actual time=0.006..0.007 rows=0 loops=1)
+  Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+  Buffers: shared hit=1
+  ->  Nested Loop  (cost=0.00..2.14 rows=1 width=80) (actual time=0.006..0.006 rows=0 loops=1)
+        Join Filter: ((o.student_id)::text = (sp.student_id)::text)
+        Buffers: shared hit=1
+        ->  Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=65) (actual time=0.005..0.006 rows=0 loops=1)
+              Filter: ((pickup_code)::text = '4827'::text)
+              Rows Removed by Filter: 4
+              Buffers: shared hit=1
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=30) (never executed)
+  ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=23) (never executed)
+Planning:
+  Buffers: shared hit=361
+Planning Time: 0.571 ms
+Execution Time: 0.039 ms
+
+
+--- Run 2 ---
+Nested Loop  (cost=0.00..3.21 rows=1 width=85) (actual time=0.005..0.006 rows=0 loops=1)
+  Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+  Buffers: shared hit=1
+  ->  Nested Loop  (cost=0.00..2.14 rows=1 width=80) (actual time=0.005..0.005 rows=0 loops=1)
+        Join Filter: ((o.student_id)::text = (sp.student_id)::text)
+        Buffers: shared hit=1
+        ->  Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=65) (actual time=0.005..0.005 rows=0 loops=1)
+              Filter: ((pickup_code)::text = '4827'::text)
+              Rows Removed by Filter: 4
+              Buffers: shared hit=1
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=30) (never executed)
+  ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=23) (never executed)
+Planning:
+  Buffers: shared hit=361
+Planning Time: 0.536 ms
+Execution Time: 0.041 ms
+
+
+--- Run 3 ---
+Nested Loop  (cost=0.00..3.21 rows=1 width=85) (actual time=0.006..0.007 rows=0 loops=1)
+  Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+  Buffers: shared hit=1
+  ->  Nested Loop  (cost=0.00..2.14 rows=1 width=80) (actual time=0.006..0.007 rows=0 loops=1)
+        Join Filter: ((o.student_id)::text = (sp.student_id)::text)
+        Buffers: shared hit=1
+        ->  Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=65) (actual time=0.006..0.006 rows=0 loops=1)
+              Filter: ((pickup_code)::text = '4827'::text)
+              Rows Removed by Filter: 4
+              Buffers: shared hit=1
+        ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=30) (never executed)
+  ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=23) (never executed)
+Planning:
+  Buffers: shared hit=361
+Planning Time: 0.639 ms
+Execution Time: 0.041 ms
+

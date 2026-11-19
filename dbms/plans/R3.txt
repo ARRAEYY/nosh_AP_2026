@@ -1,0 +1,45 @@
+=== R3 (READ) - Browse: list open outlets on a campus, best-rated first (catalog GET /outlets) ===
+Average: 0.061 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Sort  (cost=1.06..1.07 rows=3 width=127) (actual time=0.044..0.045 rows=3 loops=1)
+  Sort Key: rating DESC NULLS LAST, name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=7
+  ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=3 width=127) (actual time=0.007..0.009 rows=3 loops=1)
+        Filter: (is_open AND ((campus_id)::text = 'RU'::text))
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=134
+Planning Time: 0.251 ms
+Execution Time: 0.085 ms
+
+
+--- Run 2 ---
+Sort  (cost=1.06..1.07 rows=3 width=127) (actual time=0.025..0.026 rows=3 loops=1)
+  Sort Key: rating DESC NULLS LAST, name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=7
+  ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=3 width=127) (actual time=0.005..0.006 rows=3 loops=1)
+        Filter: (is_open AND ((campus_id)::text = 'RU'::text))
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=114
+Planning Time: 0.232 ms
+Execution Time: 0.044 ms
+
+
+--- Run 3 ---
+Sort  (cost=1.06..1.07 rows=3 width=127) (actual time=0.029..0.030 rows=3 loops=1)
+  Sort Key: rating DESC NULLS LAST, name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=7
+  ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=3 width=127) (actual time=0.006..0.007 rows=3 loops=1)
+        Filter: (is_open AND ((campus_id)::text = 'RU'::text))
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=114
+Planning Time: 0.233 ms
+Execution Time: 0.055 ms
+

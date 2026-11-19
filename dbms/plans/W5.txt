@@ -1,0 +1,42 @@
+=== W5 (WRITE) - Pay: create the payment row in PENDING state (orders.repository createOrder -> payment.create) ===
+Average: 0.179 ms
+Scan: INSERT/UPDATE (index probe on PK)
+
+--- Run 1 ---
+Insert on payments  (cost=0.00..0.01 rows=0 width=0) (actual time=0.206..0.206 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=75
+  ->  Result  (cost=0.00..0.01 rows=1 width=474) (actual time=0.001..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.061 ms
+Execution Time: 0.222 ms
+
+
+--- Run 2 ---
+Insert on payments  (cost=0.00..0.01 rows=0 width=0) (actual time=0.136..0.136 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=75
+  ->  Result  (cost=0.00..0.01 rows=1 width=474) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.060 ms
+Execution Time: 0.148 ms
+
+
+--- Run 3 ---
+Insert on payments  (cost=0.00..0.01 rows=0 width=0) (actual time=0.152..0.153 rows=0 loops=1)
+  Conflict Resolution: NOTHING
+  Tuples Inserted: 0
+  Conflicting Tuples: 1
+  Buffers: shared hit=75
+  ->  Result  (cost=0.00..0.01 rows=1 width=474) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.060 ms
+Execution Time: 0.167 ms
+

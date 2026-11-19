@@ -1,0 +1,72 @@
+=== R6 (READ) - Browse: menu items for an outlet, joined to their category (menu.findAllByOutletId) ===
+Average: 0.078 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Sort  (cost=2.23..2.23 rows=2 width=102) (actual time=0.050..0.051 rows=2 loops=1)
+  Sort Key: mc.sort_order, mi.sort_order, mi.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Hash Left Join  (cost=1.11..2.22 rows=2 width=102) (actual time=0.020..0.022 rows=2 loops=1)
+        Hash Cond: ((mi.category_id)::text = (mc.category_id)::text)
+        Buffers: shared hit=2
+        ->  Seq Scan on menu_items mi  (cost=0.00..1.10 rows=2 width=90) (actual time=0.005..0.006 rows=2 loops=1)
+              Filter: ((outlet_id)::text = 'out_commons'::text)
+              Rows Removed by Filter: 6
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.05..1.05 rows=5 width=19) (actual time=0.005..0.005 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on menu_categories mc  (cost=0.00..1.05 rows=5 width=19) (actual time=0.001..0.002 rows=5 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=305
+Planning Time: 0.425 ms
+Execution Time: 0.080 ms
+
+
+--- Run 2 ---
+Sort  (cost=2.23..2.23 rows=2 width=102) (actual time=0.044..0.046 rows=2 loops=1)
+  Sort Key: mc.sort_order, mi.sort_order, mi.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Hash Left Join  (cost=1.11..2.22 rows=2 width=102) (actual time=0.021..0.022 rows=2 loops=1)
+        Hash Cond: ((mi.category_id)::text = (mc.category_id)::text)
+        Buffers: shared hit=2
+        ->  Seq Scan on menu_items mi  (cost=0.00..1.10 rows=2 width=90) (actual time=0.006..0.006 rows=2 loops=1)
+              Filter: ((outlet_id)::text = 'out_commons'::text)
+              Rows Removed by Filter: 6
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.05..1.05 rows=5 width=19) (actual time=0.005..0.006 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on menu_categories mc  (cost=0.00..1.05 rows=5 width=19) (actual time=0.001..0.002 rows=5 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=283
+Planning Time: 0.480 ms
+Execution Time: 0.078 ms
+
+
+--- Run 3 ---
+Sort  (cost=2.23..2.23 rows=2 width=102) (actual time=0.047..0.048 rows=2 loops=1)
+  Sort Key: mc.sort_order, mi.sort_order, mi.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Hash Left Join  (cost=1.11..2.22 rows=2 width=102) (actual time=0.027..0.028 rows=2 loops=1)
+        Hash Cond: ((mi.category_id)::text = (mc.category_id)::text)
+        Buffers: shared hit=2
+        ->  Seq Scan on menu_items mi  (cost=0.00..1.10 rows=2 width=90) (actual time=0.012..0.013 rows=2 loops=1)
+              Filter: ((outlet_id)::text = 'out_commons'::text)
+              Rows Removed by Filter: 6
+              Buffers: shared hit=1
+        ->  Hash  (cost=1.05..1.05 rows=5 width=19) (actual time=0.005..0.005 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=1
+              ->  Seq Scan on menu_categories mc  (cost=0.00..1.05 rows=5 width=19) (actual time=0.002..0.002 rows=5 loops=1)
+                    Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=283
+Planning Time: 0.424 ms
+Execution Time: 0.076 ms
+

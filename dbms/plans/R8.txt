@@ -1,0 +1,66 @@
+=== R8 (READ) - Search: available menu items by name within one open outlet (catalog GET /search, scoped) ===
+Average: 0.062 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Sort  (cost=2.18..2.18 rows=1 width=79) (actual time=0.030..0.031 rows=1 loops=1)
+  Sort Key: mi.sort_order, mi.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Nested Loop  (cost=0.00..2.17 rows=1 width=79) (actual time=0.012..0.014 rows=1 loops=1)
+        Buffers: shared hit=2
+        ->  Seq Scan on menu_items mi  (cost=0.00..1.12 rows=1 width=88) (actual time=0.009..0.010 rows=1 loops=1)
+              Filter: (is_available AND ((name)::text ~~* '%dosa%'::text) AND ((outlet_id)::text = 'out_commons'::text))
+              Rows Removed by Filter: 7
+              Buffers: shared hit=1
+        ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=1 width=9) (actual time=0.002..0.002 rows=1 loops=1)
+              Filter: (is_open AND ((outlet_id)::text = 'out_commons'::text))
+              Rows Removed by Filter: 2
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=192 read=2
+Planning Time: 0.361 ms
+Execution Time: 0.063 ms
+
+
+--- Run 2 ---
+Sort  (cost=2.18..2.18 rows=1 width=79) (actual time=0.035..0.036 rows=1 loops=1)
+  Sort Key: mi.sort_order, mi.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Nested Loop  (cost=0.00..2.17 rows=1 width=79) (actual time=0.014..0.015 rows=1 loops=1)
+        Buffers: shared hit=2
+        ->  Seq Scan on menu_items mi  (cost=0.00..1.12 rows=1 width=88) (actual time=0.010..0.011 rows=1 loops=1)
+              Filter: (is_available AND ((name)::text ~~* '%dosa%'::text) AND ((outlet_id)::text = 'out_commons'::text))
+              Rows Removed by Filter: 7
+              Buffers: shared hit=1
+        ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=1 width=9) (actual time=0.002..0.002 rows=1 loops=1)
+              Filter: (is_open AND ((outlet_id)::text = 'out_commons'::text))
+              Rows Removed by Filter: 2
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=194
+Planning Time: 0.415 ms
+Execution Time: 0.066 ms
+
+
+--- Run 3 ---
+Sort  (cost=2.18..2.18 rows=1 width=79) (actual time=0.031..0.032 rows=1 loops=1)
+  Sort Key: mi.sort_order, mi.name
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=8
+  ->  Nested Loop  (cost=0.00..2.17 rows=1 width=79) (actual time=0.012..0.014 rows=1 loops=1)
+        Buffers: shared hit=2
+        ->  Seq Scan on menu_items mi  (cost=0.00..1.12 rows=1 width=88) (actual time=0.009..0.010 rows=1 loops=1)
+              Filter: (is_available AND ((name)::text ~~* '%dosa%'::text) AND ((outlet_id)::text = 'out_commons'::text))
+              Rows Removed by Filter: 7
+              Buffers: shared hit=1
+        ->  Seq Scan on outlets o  (cost=0.00..1.04 rows=1 width=9) (actual time=0.002..0.002 rows=1 loops=1)
+              Filter: (is_open AND ((outlet_id)::text = 'out_commons'::text))
+              Rows Removed by Filter: 2
+              Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=194
+Planning Time: 0.357 ms
+Execution Time: 0.057 ms
+

@@ -1,0 +1,42 @@
+=== W4 (WRITE) - Place order: assign / regenerate the pickup OTP on an order (orders.service generatePickupCode) ===
+Average: 0.191 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Update on orders  (cost=0.00..1.05 rows=0 width=0) (actual time=0.148..0.149 rows=0 loops=1)
+  Buffers: shared hit=36
+  ->  Seq Scan on orders  (cost=0.00..1.05 rows=1 width=64) (actual time=0.004..0.005 rows=1 loops=1)
+        Filter: ((order_id)::text = 'ord_new01'::text)
+        Rows Removed by Filter: 3
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=126
+Planning Time: 0.282 ms
+Execution Time: 0.185 ms
+
+
+--- Run 2 ---
+Update on orders  (cost=0.00..1.05 rows=0 width=0) (actual time=0.154..0.154 rows=0 loops=1)
+  Buffers: shared hit=39
+  ->  Seq Scan on orders  (cost=0.00..1.05 rows=1 width=64) (actual time=0.009..0.009 rows=1 loops=1)
+        Filter: ((order_id)::text = 'ord_new01'::text)
+        Rows Removed by Filter: 3
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=126
+Planning Time: 0.255 ms
+Execution Time: 0.190 ms
+
+
+--- Run 3 ---
+Update on orders  (cost=0.00..1.05 rows=0 width=0) (actual time=0.168..0.168 rows=0 loops=1)
+  Buffers: shared hit=39
+  ->  Seq Scan on orders  (cost=0.00..1.05 rows=1 width=64) (actual time=0.007..0.008 rows=1 loops=1)
+        Filter: ((order_id)::text = 'ord_new01'::text)
+        Rows Removed by Filter: 3
+        Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=126
+Planning Time: 0.241 ms
+Execution Time: 0.198 ms
+

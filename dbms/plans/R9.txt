@@ -1,0 +1,117 @@
+=== R9 (READ) - Tracking: full order by order_number with items, student, outlet, payment (orders.findByOrderNumber + ORDER_INCLUDE) ===
+Average: 0.128 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+GroupAggregate  (cost=6.55..6.59 rows=1 width=362) (actual time=0.033..0.034 rows=0 loops=1)
+  Group Key: o.order_id, sp.student_id, u.user_id, ot.outlet_id, p.payment_id
+  Buffers: shared hit=4
+  ->  Sort  (cost=6.55..6.56 rows=1 width=402) (actual time=0.033..0.034 rows=0 loops=1)
+        Sort Key: o.order_id, sp.student_id, u.user_id, ot.outlet_id, p.payment_id, oi.order_item_id
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Nested Loop Left Join  (cost=0.00..6.54 rows=1 width=402) (actual time=0.009..0.010 rows=0 loops=1)
+              Join Filter: ((oi.order_id)::text = (o.order_id)::text)
+              Buffers: shared hit=1
+              ->  Nested Loop Left Join  (cost=0.00..5.46 rows=1 width=330) (actual time=0.009..0.009 rows=0 loops=1)
+                    Join Filter: ((p.order_id)::text = (o.order_id)::text)
+                    Buffers: shared hit=1
+                    ->  Nested Loop  (cost=0.00..4.37 rows=1 width=302) (actual time=0.008..0.009 rows=0 loops=1)
+                          Join Filter: ((sp.user_id)::text = (u.user_id)::text)
+                          Buffers: shared hit=1
+                          ->  Nested Loop  (cost=0.00..3.21 rows=1 width=277) (actual time=0.008..0.009 rows=0 loops=1)
+                                Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+                                Buffers: shared hit=1
+                                ->  Nested Loop  (cost=0.00..2.14 rows=1 width=250) (actual time=0.008..0.009 rows=0 loops=1)
+                                      Join Filter: ((o.student_id)::text = (sp.student_id)::text)
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=221) (actual time=0.008..0.008 rows=0 loops=1)
+                                            Filter: ((order_number)::text = 'NOSH-000123'::text)
+                                            Rows Removed by Filter: 4
+                                            Buffers: shared hit=1
+                                      ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=37) (never executed)
+                                ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=36) (never executed)
+                          ->  Seq Scan on users u  (cost=0.00..1.07 rows=7 width=32) (never executed)
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=35) (never executed)
+              ->  Seq Scan on order_items oi  (cost=0.00..1.04 rows=4 width=79) (never executed)
+Planning:
+  Buffers: shared hit=613
+Planning Time: 1.234 ms
+Execution Time: 0.143 ms
+
+
+--- Run 2 ---
+GroupAggregate  (cost=6.55..6.59 rows=1 width=362) (actual time=0.025..0.026 rows=0 loops=1)
+  Group Key: o.order_id, sp.student_id, u.user_id, ot.outlet_id, p.payment_id
+  Buffers: shared hit=4
+  ->  Sort  (cost=6.55..6.56 rows=1 width=402) (actual time=0.024..0.025 rows=0 loops=1)
+        Sort Key: o.order_id, sp.student_id, u.user_id, ot.outlet_id, p.payment_id, oi.order_item_id
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Nested Loop Left Join  (cost=0.00..6.54 rows=1 width=402) (actual time=0.006..0.007 rows=0 loops=1)
+              Join Filter: ((oi.order_id)::text = (o.order_id)::text)
+              Buffers: shared hit=1
+              ->  Nested Loop Left Join  (cost=0.00..5.46 rows=1 width=330) (actual time=0.006..0.007 rows=0 loops=1)
+                    Join Filter: ((p.order_id)::text = (o.order_id)::text)
+                    Buffers: shared hit=1
+                    ->  Nested Loop  (cost=0.00..4.37 rows=1 width=302) (actual time=0.006..0.006 rows=0 loops=1)
+                          Join Filter: ((sp.user_id)::text = (u.user_id)::text)
+                          Buffers: shared hit=1
+                          ->  Nested Loop  (cost=0.00..3.21 rows=1 width=277) (actual time=0.006..0.006 rows=0 loops=1)
+                                Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+                                Buffers: shared hit=1
+                                ->  Nested Loop  (cost=0.00..2.14 rows=1 width=250) (actual time=0.006..0.006 rows=0 loops=1)
+                                      Join Filter: ((o.student_id)::text = (sp.student_id)::text)
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=221) (actual time=0.006..0.006 rows=0 loops=1)
+                                            Filter: ((order_number)::text = 'NOSH-000123'::text)
+                                            Rows Removed by Filter: 4
+                                            Buffers: shared hit=1
+                                      ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=37) (never executed)
+                                ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=36) (never executed)
+                          ->  Seq Scan on users u  (cost=0.00..1.07 rows=7 width=32) (never executed)
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=35) (never executed)
+              ->  Seq Scan on order_items oi  (cost=0.00..1.04 rows=4 width=79) (never executed)
+Planning:
+  Buffers: shared hit=563
+Planning Time: 1.160 ms
+Execution Time: 0.104 ms
+
+
+--- Run 3 ---
+GroupAggregate  (cost=6.55..6.59 rows=1 width=362) (actual time=0.039..0.040 rows=0 loops=1)
+  Group Key: o.order_id, sp.student_id, u.user_id, ot.outlet_id, p.payment_id
+  Buffers: shared hit=4
+  ->  Sort  (cost=6.55..6.56 rows=1 width=402) (actual time=0.038..0.039 rows=0 loops=1)
+        Sort Key: o.order_id, sp.student_id, u.user_id, ot.outlet_id, p.payment_id, oi.order_item_id
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Nested Loop Left Join  (cost=0.00..6.54 rows=1 width=402) (actual time=0.010..0.011 rows=0 loops=1)
+              Join Filter: ((oi.order_id)::text = (o.order_id)::text)
+              Buffers: shared hit=1
+              ->  Nested Loop Left Join  (cost=0.00..5.46 rows=1 width=330) (actual time=0.009..0.010 rows=0 loops=1)
+                    Join Filter: ((p.order_id)::text = (o.order_id)::text)
+                    Buffers: shared hit=1
+                    ->  Nested Loop  (cost=0.00..4.37 rows=1 width=302) (actual time=0.009..0.010 rows=0 loops=1)
+                          Join Filter: ((sp.user_id)::text = (u.user_id)::text)
+                          Buffers: shared hit=1
+                          ->  Nested Loop  (cost=0.00..3.21 rows=1 width=277) (actual time=0.009..0.010 rows=0 loops=1)
+                                Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+                                Buffers: shared hit=1
+                                ->  Nested Loop  (cost=0.00..2.14 rows=1 width=250) (actual time=0.009..0.010 rows=0 loops=1)
+                                      Join Filter: ((o.student_id)::text = (sp.student_id)::text)
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on orders o  (cost=0.00..1.05 rows=1 width=221) (actual time=0.009..0.009 rows=0 loops=1)
+                                            Filter: ((order_number)::text = 'NOSH-000123'::text)
+                                            Rows Removed by Filter: 4
+                                            Buffers: shared hit=1
+                                      ->  Seq Scan on student_profiles sp  (cost=0.00..1.04 rows=4 width=37) (never executed)
+                                ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=36) (never executed)
+                          ->  Seq Scan on users u  (cost=0.00..1.07 rows=7 width=32) (never executed)
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=35) (never executed)
+              ->  Seq Scan on order_items oi  (cost=0.00..1.04 rows=4 width=79) (never executed)
+Planning:
+  Buffers: shared hit=563
+Planning Time: 1.507 ms
+Execution Time: 0.138 ms
+

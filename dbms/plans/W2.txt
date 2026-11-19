@@ -1,0 +1,39 @@
+=== W2 (WRITE) - Place order: add order items with price + name snapshot (orders.repository items.create) ===
+Average: 0.762 ms
+Scan: INSERT/UPDATE (index probe on PK)
+
+--- Run 1 ---
+Insert on order_items  (cost=0.00..0.03 rows=0 width=0) (actual time=0.145..0.146 rows=0 loops=1)
+  Buffers: shared hit=61
+  ->  Values Scan on "*VALUES*"  (cost=0.00..0.03 rows=2 width=1074) (actual time=0.003..0.005 rows=2 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.059 ms
+Trigger for constraint order_items_order_id_fkey: time=0.459 calls=2
+Trigger for constraint order_items_menu_item_id_fkey: time=0.147 calls=2
+Execution Time: 0.763 ms
+
+
+--- Run 2 ---
+Insert on order_items  (cost=0.00..0.03 rows=0 width=0) (actual time=0.133..0.133 rows=0 loops=1)
+  Buffers: shared hit=63
+  ->  Values Scan on "*VALUES*"  (cost=0.00..0.03 rows=2 width=1074) (actual time=0.003..0.005 rows=2 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.069 ms
+Trigger for constraint order_items_order_id_fkey: time=0.458 calls=2
+Trigger for constraint order_items_menu_item_id_fkey: time=0.151 calls=2
+Execution Time: 0.775 ms
+
+
+--- Run 3 ---
+Insert on order_items  (cost=0.00..0.03 rows=0 width=0) (actual time=0.166..0.166 rows=0 loops=1)
+  Buffers: shared hit=63
+  ->  Values Scan on "*VALUES*"  (cost=0.00..0.03 rows=2 width=1074) (actual time=0.003..0.005 rows=2 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.058 ms
+Trigger for constraint order_items_order_id_fkey: time=0.422 calls=2
+Trigger for constraint order_items_menu_item_id_fkey: time=0.148 calls=2
+Execution Time: 0.747 ms
+

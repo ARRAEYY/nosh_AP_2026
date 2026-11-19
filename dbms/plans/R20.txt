@@ -1,0 +1,84 @@
+=== R20 (READ) - Admin: pending refunds to process, with payment + order + outlet context (admin refund queue) ===
+Average: 0.087 ms
+Scan: Seq Scan
+
+--- Run 1 ---
+Sort  (cost=4.27..4.27 rows=1 width=95) (actual time=0.018..0.019 rows=0 loops=1)
+  Sort Key: r.created_at
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  ->  Nested Loop  (cost=0.00..4.26 rows=1 width=95) (actual time=0.005..0.006 rows=0 loops=1)
+        Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+        Buffers: shared hit=1
+        ->  Nested Loop  (cost=0.00..3.19 rows=1 width=90) (actual time=0.005..0.006 rows=0 loops=1)
+              Join Filter: ((p.order_id)::text = (o.order_id)::text)
+              Buffers: shared hit=1
+              ->  Nested Loop  (cost=0.00..2.10 rows=1 width=71) (actual time=0.005..0.006 rows=0 loops=1)
+                    Join Filter: ((p.payment_id)::text = (r.payment_id)::text)
+                    Buffers: shared hit=1
+                    ->  Seq Scan on refunds r  (cost=0.00..1.01 rows=1 width=49) (actual time=0.005..0.005 rows=0 loops=1)
+                          Filter: ((status)::text = 'PENDING'::text)
+                          Rows Removed by Filter: 1
+                          Buffers: shared hit=1
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=29) (never executed)
+              ->  Seq Scan on orders o  (cost=0.00..1.04 rows=4 width=26) (never executed)
+        ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=23) (never executed)
+Planning:
+  Buffers: shared hit=397
+Planning Time: 0.671 ms
+Execution Time: 0.084 ms
+
+
+--- Run 2 ---
+Sort  (cost=4.27..4.27 rows=1 width=95) (actual time=0.020..0.021 rows=0 loops=1)
+  Sort Key: r.created_at
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  ->  Nested Loop  (cost=0.00..4.26 rows=1 width=95) (actual time=0.007..0.007 rows=0 loops=1)
+        Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+        Buffers: shared hit=1
+        ->  Nested Loop  (cost=0.00..3.19 rows=1 width=90) (actual time=0.007..0.007 rows=0 loops=1)
+              Join Filter: ((p.order_id)::text = (o.order_id)::text)
+              Buffers: shared hit=1
+              ->  Nested Loop  (cost=0.00..2.10 rows=1 width=71) (actual time=0.006..0.007 rows=0 loops=1)
+                    Join Filter: ((p.payment_id)::text = (r.payment_id)::text)
+                    Buffers: shared hit=1
+                    ->  Seq Scan on refunds r  (cost=0.00..1.01 rows=1 width=49) (actual time=0.006..0.006 rows=0 loops=1)
+                          Filter: ((status)::text = 'PENDING'::text)
+                          Rows Removed by Filter: 1
+                          Buffers: shared hit=1
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=29) (never executed)
+              ->  Seq Scan on orders o  (cost=0.00..1.04 rows=4 width=26) (never executed)
+        ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=23) (never executed)
+Planning:
+  Buffers: shared hit=397
+Planning Time: 0.671 ms
+Execution Time: 0.090 ms
+
+
+--- Run 3 ---
+Sort  (cost=4.27..4.27 rows=1 width=95) (actual time=0.041..0.042 rows=0 loops=1)
+  Sort Key: r.created_at
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4
+  ->  Nested Loop  (cost=0.00..4.26 rows=1 width=95) (actual time=0.005..0.006 rows=0 loops=1)
+        Join Filter: ((o.outlet_id)::text = (ot.outlet_id)::text)
+        Buffers: shared hit=1
+        ->  Nested Loop  (cost=0.00..3.19 rows=1 width=90) (actual time=0.005..0.006 rows=0 loops=1)
+              Join Filter: ((p.order_id)::text = (o.order_id)::text)
+              Buffers: shared hit=1
+              ->  Nested Loop  (cost=0.00..2.10 rows=1 width=71) (actual time=0.005..0.006 rows=0 loops=1)
+                    Join Filter: ((p.payment_id)::text = (r.payment_id)::text)
+                    Buffers: shared hit=1
+                    ->  Seq Scan on refunds r  (cost=0.00..1.01 rows=1 width=49) (actual time=0.005..0.005 rows=0 loops=1)
+                          Filter: ((status)::text = 'PENDING'::text)
+                          Rows Removed by Filter: 1
+                          Buffers: shared hit=1
+                    ->  Seq Scan on payments p  (cost=0.00..1.04 rows=4 width=29) (never executed)
+              ->  Seq Scan on orders o  (cost=0.00..1.04 rows=4 width=26) (never executed)
+        ->  Seq Scan on outlets ot  (cost=0.00..1.03 rows=3 width=23) (never executed)
+Planning:
+  Buffers: shared hit=397
+Planning Time: 0.651 ms
+Execution Time: 0.087 ms
+
